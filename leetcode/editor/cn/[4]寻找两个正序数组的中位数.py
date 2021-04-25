@@ -60,36 +60,36 @@
 
 
 # leetcode submit region begin(Prohibit modification and deletion)
-class Solution(object):
-    def findMedianSortedArrays(self, nums1, nums2):
-        """
-        :type nums1: List[int]
-        :type nums2: List[int]
-        :rtype: float
-        """
-        n1 = len(nums1)
-        n2 = len(nums2)
-        if n1 > n2:
-            return self.findMedianSortedArrays(nums2, nums1)
-        k = (n1 + n2 + 1) // 2
-        left = 0
-        right = n1
-        while left < right:
-            m1 = left + (right - left) // 2
-            m2 = k - m1
-            if nums1[m1] < nums2[m2 - 1]:
-                left = m1 + 1
-            else:
-                right = m1
-        m1 = left
-        m2 = k - m1
-        c1 = max(nums1[m1 - 1] if m1 > 0 else float("-inf"),
-                 nums2[m2 - 1] if m2 > 0 else float("-inf"))
-        if (n1 + n2) % 2 == 1:
-            return c1
-        c2 = min(nums1[m1] if m1 < n1 else float("inf"),
-                 nums2[m2] if m2 < n2 else float("inf"))
-        return (c1 + c2) / 2
+class Solution:
+    def findMedianSortedArrays(self, nums1: list[int], nums2: list[int]) -> float:
+        n1, n2 = len(nums1), len(nums2)
+
+        def get_kth_element(k: int) -> int:
+            i1, i2 = 0, 0
+            while k != 0:
+                if i1 == n1:
+                    return nums2[i2 + k - 1]
+                if i2 == n2:
+                    return nums1[i1 + k - 1]
+                if k == 1:  # 1//2 = 0 所有也要判断一下
+                    return min(nums1[i1], nums2[i2])
+
+                new_i1 = min(i1 + k // 2 - 1, n1 - 1)  # 每个数组贡献 k//2
+                new_i2 = min(i2 + k // 2 - 1, n2 - 1)
+                pivot_1, pivot_2 = nums1[new_i1], nums2[new_i2]
+                if pivot_1 <= pivot_2:  # 把小的那段扔掉
+                    k -= (new_i1 - i1 + 1)  # 做好index的更新
+                    i1 = new_i1 + 1
+                else:
+                    k -= (new_i2 - i2 + 1)
+                    i2 = new_i2 + 1
+
+        n = n1 + n2
+        if n % 2 == 1:
+            return get_kth_element((n + 1) // 2)  # 0 1 2 3 4  n=5 取第3个
+        else:
+            return (get_kth_element(n // 2) + get_kth_element((n + 2) // 2)) / 2.0
+
         # 暴力破解
         # nums1.extend(nums2)
         # nums1.sort()
