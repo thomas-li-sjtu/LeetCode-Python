@@ -61,10 +61,10 @@
 
 # leetcode submit region begin(Prohibit modification and deletion)
 class Solution:
-    def findMedianSortedArrays(self, nums1: list[int], nums2: list[int]) -> float:
+    def findMedianSortedArrays(self, nums1, nums2):
         n1, n2 = len(nums1), len(nums2)
 
-        def get_kth_element(k: int) -> int:
+        def get_kth_element(k):
             i1, i2 = 0, 0
             while k != 0:
                 if i1 == n1:
@@ -88,7 +88,7 @@ class Solution:
         if n % 2 == 1:
             return get_kth_element((n + 1) // 2)  # 0 1 2 3 4  n=5 取第3个
         else:
-            return (get_kth_element(n // 2) + get_kth_element((n + 2) // 2)) / 2.0
+            return (get_kth_element(n // 2) + get_kth_element((n + 2) // 2)) / 2.0  # 0 1 2 3 n=4 取第2个，第3个的aver
 
         # 暴力破解
         # nums1.extend(nums2)
