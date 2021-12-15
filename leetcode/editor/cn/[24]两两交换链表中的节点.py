@@ -53,4 +53,24 @@ class Solution(object):
         :type head: ListNode
         :rtype: ListNode
         """
+        if not head:
+            return None
+        if not head.next:
+            return head
+        help_node = ListNode()
+        help_node.next = head
+        tmp_head = head
+        front_node = help_node
+        while tmp_head and tmp_head.next:
+            # 交换两个节点的next
+            front_node.next = tmp_head.next
+            tmp_save_node = tmp_head.next.next
+            tmp_head.next.next = tmp_head
+            tmp_head.next = tmp_save_node
+
+            front_node = tmp_head
+
+            tmp_head = tmp_save_node
+
+        return help_node.next
 # leetcode submit region end(Prohibit modification and deletion)
