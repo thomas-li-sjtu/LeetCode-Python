@@ -50,8 +50,10 @@ class Solution(object):
         g = sorted(g)
         s = sorted(s)
         count = 0
-        for i, j in zip(g,s):
-            if i <= j:
+        j = 0
+        for i in s:
+            if j < len(g) and i >= g[j]:
                 count += 1
+                j += 1
         return count
 # leetcode submit region end(Prohibit modification and deletion)
