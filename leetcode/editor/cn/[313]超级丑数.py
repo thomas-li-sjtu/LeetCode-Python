@@ -50,4 +50,18 @@ class Solution(object):
         :type primes: List[int]
         :rtype: int
         """
+        m = len(primes)
+        pt = [0]*m  # 指针
+        out = [0] * n
+        out[0] = 1
+        candidate = [out[last_ugly_pointer] * prime for prime, last_ugly_pointer in zip(primes, pt)]
+
+        for i in range(1, n):
+            out[i] = min(candidate)
+            for j in range(m):
+                if out[i] == out[pt[j]] * primes[j]:
+                    pt[j] += 1
+                    candidate[j] = out[pt[j]] * primes[j]
+        return out[-1]
+
 # leetcode submit region end(Prohibit modification and deletion)
