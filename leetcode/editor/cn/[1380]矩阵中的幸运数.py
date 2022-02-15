@@ -58,6 +58,4 @@ class Solution(object):
         min_row = [max(i) for i in rows]
 
         return list(set(min_line) & set(min_row))
-
-
 # leetcode submit region end(Prohibit modification and deletion)
