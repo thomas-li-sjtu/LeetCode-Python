@@ -68,7 +68,8 @@ class Solution(object):
         """
         self.node_list = []
         self.traversal(root)
-        self.node_list = [i for i in self.node_list if i]
+        print(self.node_list)
+        self.node_list = [i for i in self.node_list if i is not None]
         return self.node_list
 
     def traversal(self, root):
