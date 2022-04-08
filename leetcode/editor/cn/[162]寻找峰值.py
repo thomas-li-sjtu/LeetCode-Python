@@ -57,7 +57,12 @@ class Solution(object):
                     elif nums[mid+1] > nums[mid]:
                         left = mid+1
             elif mid-1 < 0:
-                return 0
+                if mid+1 <= len(nums)-1 and nums[mid] < nums[mid+1]:
+                    left = mid+1
+                elif mid+1 > len(nums)-1:
+                    return 0
+                elif mid+1 <= len(nums)-1 and nums[mid] > nums[mid+1]:
+                    return 0
             elif mid+1 > len(nums)-1:
                 return mid
 # leetcode submit region end(Prohibit modification and deletion)
