@@ -105,3 +105,4 @@ class Solution:
 s = Solution()
 print(s.numDecodings("1201234"))
 print(s.numDecodings("230"))
+print(s.numDecodings("301"))
