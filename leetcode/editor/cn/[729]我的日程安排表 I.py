@@ -43,7 +43,7 @@ myCalendar.book(20, 30); // return True ，这个日程安排可以添加到日�
  Related Topics 设计 线段树 有序集合 👍 122 👎 0
 
 """
-import bisect
+
 
 # leetcode submit region begin(Prohibit modification and deletion)
 class MyCalendar:
@@ -52,19 +52,27 @@ class MyCalendar:
         self.calendars = []
 
     def book(self, start: int, end: int) -> bool:
-        for index, calendar in enumerate(self.calendars):
-            if end <= calendar[0]:
-                # 结束时间小于当前元素的开始时间，不会重叠，直接插入
-                # 目的是维持时间升序
-                self.calendars.insert(index, (start, end))
-                break
-            elif end > calendar[0] and start < calendar[1]:
-                # 结束时间大于当前元素的开始时间，开始时间小于当前元素的结束时间，存在重叠
-                return False
-        else:
-            # 插入的时间在所有日程的时间之后
-            self.calendars.append((start, end))
-        return True
+        # for index, calendar in enumerate(self.calendars):
+        #     if end <= calendar[0]:
+        #         # 结束时间小于当前元素的开始时间，不会重叠，直接插入
+        #         # 目的是维持时间升序
+        #         self.calendars.insert(index, (start, end))
+        #         break
+        #     elif end > calendar[0] and start < calendar[1]:
+        #         # 结束时间大于当前元素的开始时间，开始时间小于当前元素的结束时间，存在重叠
+        #         return False
+        # else:
+        #     # 插入的时间在所有日程的时间之后
+        #     self.calendars.append((start, end))
+        # return True
+
+        from bisect import bisect_left as bl
+        from bisect import bisect_right as br
+        i, j = br(self.calendars, start), bl(self.calendars, end)
+        if i == j and i % 2 == 0:
+            self.calendars[i:j] = [start] * (i % 2 == 0) + [end] * (j % 2 == 0)
+            return True
+        return False
 
 
 # Your MyCalendar object will be instantiated and called as such:
