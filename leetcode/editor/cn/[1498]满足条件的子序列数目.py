@@ -59,10 +59,10 @@ class Solution:
         ret = 0
         left, right = 0, len(nums) - 1
         while left <= right:
-            if nums[left] + nums[right] > target:
+            if nums[left] + nums[right] > target:  # 从右边开始减，直到找到合适的序列，更新l以后，r也要更新
                 right -= 1
             else:
-                ret = (ret + (1 << (right - left))) % mod
+                ret = (ret + (1 << (right - left))) % mod  # 计算包含nums[l]的所有子集个数，这样l+1后，之后计算的子集里面肯定没有之前的nums[l]，这样就不会重复计算
                 left += 1
         return ret
 # leetcode submit region end(Prohibit modification and deletion)
