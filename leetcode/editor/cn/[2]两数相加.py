@@ -54,23 +54,74 @@ class Solution(object):
         :type l2: ListNode
         :rtype: ListNode
         """
-        num_l1, num_l2 = [], []
-        while l1:
-            num_l1.append(str(l1.val))
+        # num_l1, num_l2 = [], []
+        # while l1:
+        #     num_l1.append(str(l1.val))
+        #     l1 = l1.next
+        # while l2:
+        #     num_l2.append(str(l2.val))
+        #     l2 = l2.next
+        # num_l1 = int("".join(num_l1[::-1]))
+        # num_l2 = int("".join(num_l2[::-1]))
+        # out = list(str(num_l1 + num_l2))[::-1]
+        # newhead = ListNode()
+        # head = newhead
+        # for i in out:
+        #     tmp = ListNode(val=int(i))
+        #     head.next = tmp
+        #     head = tmp
+        # return newhead.next
+
+        cur_head = ListNode(-1)
+        head_backup = cur_head
+
+        increment = 0
+        while l1 and l2:
+            cur_val = l1.val + l2.val
+            if increment > 0:
+                cur_val += increment
+                increment = 0
+            if cur_val > 9:
+                increment = cur_val // 10
+                cur_val = cur_val % 10
+
+            next_node = ListNode(cur_val)
+            head_backup.next = next_node
+            head_backup = head_backup.next
             l1 = l1.next
-        while l2:
-            num_l2.append(str(l2.val))
             l2 = l2.next
-        num_l1 = int("".join(num_l1[::-1]))
-        num_l2 = int("".join(num_l2[::-1]))
-        out = list(str(num_l1 + num_l2))[::-1]
-        newhead = ListNode()
-        head = newhead
-        for i in out:
-            tmp = ListNode(val=int(i))
-            head.next = tmp
-            head = tmp
-        return newhead.next
+
+        if l1 and not l2:
+            while l1:
+                cur_val = l1.val
+                if increment:
+                    cur_val += increment
+                    increment = 0
+                if cur_val > 9:
+                    increment = cur_val // 10
+                    cur_val = cur_val % 10
+                next_node = ListNode(cur_val)
+                head_backup.next = next_node
+                head_backup = head_backup.next
+                l1 = l1.next
+        elif l2 and not l1:
+            while l2:
+                cur_val = l2.val
+                if increment:
+                    cur_val += increment
+                    increment = 0
+                if cur_val > 9:
+                    increment = cur_val // 10
+                    cur_val = cur_val % 10
+                next_node = ListNode(cur_val)
+                head_backup.next = next_node
+                head_backup = head_backup.next
+                l2 = l2.next
+
+        if increment > 0:
+            next_node = ListNode(increment)
+            head_backup.next = next_node
+        return cur_head.next
 
 
 # leetcode submit region end(Prohibit modification and deletion)
