@@ -62,16 +62,19 @@
 # leetcode submit region begin(Prohibit modification and deletion)
 class Solution:
     def findMedianSortedArrays(self, nums1, nums2):
+        # 取两个数组中的第k/2个元素进行比较，如果数组1的元素小于数组2的元素，则说明数组1中的前k/2个元素不可能成为第k个元素的候选，
+        # 所以将数组1中的前k/2个元素去掉，组成新数组和数组2求第k-k/2小的元素，因为我们把前k/2个元素去掉了，
+        # 所以相应的k值也应该减小。另外就是注意处理一些边界条件问题，比如某一个数组可能为空或者k为1的情况
         n1, n2 = len(nums1), len(nums2)
 
         def get_kth_element(k):
             i1, i2 = 0, 0
             while k != 0:
                 if i1 == n1:
-                    return nums2[i2 + k - 1]
+                    return nums2[i2 + k - 1]  # num1到达尽头
                 if i2 == n2:
-                    return nums1[i1 + k - 1]
-                if k == 1:  # 1//2 = 0 所有也要判断一下
+                    return nums1[i1 + k - 1]  # num2到达尽头
+                if k == 1:  # 所有也要判断一下
                     return min(nums1[i1], nums2[i2])
 
                 new_i1 = min(i1 + k // 2 - 1, n1 - 1)  # 每个数组贡献 k//2
