@@ -50,23 +50,60 @@ from typing import List
 # leetcode submit region begin(Prohibit modification and deletion)
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
-        rest = target
-        res = set()
-        path = []
+        # 超时
+        # rest = target
+        # res = set()
+        # path = []
+        #
+        # def combine(rest):
+        #     if rest == 0:
+        #         res.add(tuple(sorted(path[:])))
+        #     elif rest < 0:
+        #         return
+        #     else:
+        #         for i in range(0, len(candidates)):
+        #             path.append(candidates[i])
+        #             combine(rest - candidates[i])
+        #             path.pop()
+        #
+        # combine(rest)
+        # return [list(i) for i in res]
 
-        def combine(rest):
-            if rest == 0:
-                res.add(tuple(sorted(path[:])))
-            elif rest < 0:
+        res, track = list(), list()
+
+        def backtrack(candidates, start, trackSum, target):
+            # 结束条件
+            if trackSum == target:
+                res.append(track[:])  # ！！！此处有坑需要注意
                 return
-            else:
-                for i in range(0, len(candidates)):
-                    path.append(candidates[i])
-                    combine(rest - candidates[i])
-                    path.pop()
+            if trackSum > target:
+                return
+            for i in range(start, len(candidates)):
+                track.append(candidates[i])
+                trackSum += candidates[i]
+                backtrack(candidates, i, trackSum, target)  # 重复使用元素任意次 令start==i
+                track.pop()
+                trackSum -= candidates[i]
 
-        combine(rest)
-        return [list(i) for i in res]
+        backtrack(candidates, 0, 0, target)
+        return res
+
+    # 回溯模板
+    # result = []
+    #
+    # def backtrack(选择列表, 路径):
+    #     if 满足结束条件:
+    #         result.add(路径)
+    #         return
+    #
+    #     for 选择 in 选择列表:
+    #         # 做选择
+    #         路径.add(选择)
+    #         将该选择从选择列表移除
+    #         backtrack(选择列表, 路径)  # 核心 递归调用之前【做选择】，调用之后【撤销选择】
+    #         # 撤销选择
+    #         路径.remove(选择)
+    #         将该选择再加入选择列表
 
 
 # leetcode submit region end(Prohibit modification and deletion)
